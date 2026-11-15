@@ -1,0 +1,18 @@
+{
+  "name": "demo-web-shop-automation",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "devDependencies": {
+    "@playwright/test": "^1.65.1",
+    "allure": "^3.33.0",
+    "allure-playwright": "^3.14.0"
+  }
+}
