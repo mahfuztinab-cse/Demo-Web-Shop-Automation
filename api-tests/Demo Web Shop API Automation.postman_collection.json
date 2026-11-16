@@ -1,0 +1,137 @@
+{
+  "info": {
+    "_postman_id": "4d802012-97e5-49df-8c4a-63f1f062776d",
+    "name": "Demo Web Shop API Automation",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "58568621",
+    "_collection_link": "https://go.postman.co/collection/58568621-4d802012-97e5-49df-8c4a-63f1f062776d?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "GET - Get All Users",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Response is a non-empty array\", function () { \r\n    const users = pm.response.json();\r\n\r\n    pm.expect(users).to.be.an('array');\r\n    pm.expect(users.length).to.be.greaterThan(0);  \r\n}); \r\n\r\npm.test(\"Each user has id, name and email\", function () {\r\n    const users = pm.response.json();\r\n\r\n    users.forEach(function (user) {\r\n        pm.expect(user).to.have.property(\"id\");\r\n        pm.expect(user).to.have.property(\"name\");\r\n        pm.expect(user).to.have.property(\"email\");\r\n    });\r\n});\r\n\r\n// Save a dynamic User ID from GET response\r\nconst users = pm.response.json();\r\n\r\nconst userId = users[0].id;\r\n\r\npm.collectionVariables.set(\"userId\", userId);\r\n\r\nconsole.log(\"Saved User ID:\", userId);\r\n\r\npm.test(\"Status code is 200\", function () {\r\n    pm.response.to.have.status(200);\r\n});\r\n"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/users",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "users"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "GET - Get User by ID",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {\r\n    pm.response.to.have.status(200);\r\n});\r\n\r\npm.test(\"User ID matches saved ID\", function () {\r\n    const user = pm.response.json();\r\n\r\n    pm.expect(String(user.id)).to.eql(\r\n        String(pm.collectionVariables.get(\"userId\"))\r\n    );\r\n});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/users/{{userId}}",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "users",
+            "{{userId}}"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "PUT - Update User",
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "const suffix = Date.now();\r\n\r\npm.collectionVariables.set(\"updatedName\", \"Mahfuz Tinab \" + suffix);\r\npm.collectionVariables.set(\"updatedEmail\", \"mahfuz.\" + suffix + \"@example.com\");\r\npm.collectionVariables.set(\"updatedCompany\", \"Ostad \" + suffix);"
+            ]
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "const response = pm.response.json();\r\n\r\npm.test(\"Status code is 200\", function () {\r\n    pm.response.to.have.status(200);\r\n});\r\n\r\npm.test(\"Returned ID matches saved User ID\", function () {\r\n    pm.expect(response.id).to.eql(\r\n        Number(pm.collectionVariables.get(\"userId\"))\r\n    );\r\n});\r\n\r\npm.test(\"Phone number is not empty\", function () {\r\n    pm.expect(response.phone).to.be.a(\"string\").and.not.empty;\r\n});\r\n\r\npm.test(\"Name is updated\", function () {\r\n    pm.expect(response.name).to.eql(\r\n        pm.collectionVariables.get(\"updatedName\")\r\n    );\r\n});\r\n\r\npm.test(\"Email is updated\", function () {\r\n    pm.expect(response.email).to.eql(\r\n        pm.collectionVariables.get(\"updatedEmail\")\r\n    );\r\n});\r\n\r\npm.test(\"Company name is updated\", function () {\r\n    pm.expect(response.company.name).to.eql(\r\n        pm.collectionVariables.get(\"updatedCompany\")\r\n    );\r\n});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "PUT",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"name\": \"{{updatedName}}\",\r\n    \"email\": \"{{updatedEmail}}\",\r\n    \"phone\": \"01402806910\",\r\n    \"company\": {\r\n        \"name\": \"{{updatedCompany}}\"\r\n    }\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/users/{{userId}}",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "users",
+            "{{userId}}"
+          ]
+        }
+      },
+      "response": []
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": ""
+    },
+    {
+      "key": "userId",
+      "value": ""
+    },
+    {
+      "key": "updatedName",
+      "value": ""
+    },
+    {
+      "key": "updatedEmail",
+      "value": ""
+    },
+    {
+      "key": "updatedCompany",
+      "value": ""
+    }
+  ]
+}
