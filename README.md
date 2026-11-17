@@ -120,7 +120,17 @@ npx allure generate allure-results --clean -o allure-report
 npx allure open allure-report
 ```
 
-## Part B — API Automation
+## Part B — GitHub Workflow
+
+The project uses separate Git branches for individual tasks.
+
+- `Q1-Invalid-Login`
+- `Q2-Register-Add-To-Cart`
+- `Q3-Product-Search-Checkout`
+- `Part-B-API-Automation`
+- `main`
+  
+## Part C — API Automation
 
 API testing is performed using Postman and Newman with JSONPlaceholder REST API.
 
@@ -161,16 +171,6 @@ newman run "api-tests/Demo Web Shop API Automation.postman_collection.json" --en
 - Newman CLI execution results
 
 Generated reports and test result folders are excluded from Git using `.gitignore`.
-
-## GitHub Workflow
-
-The project uses separate Git branches for individual tasks.
-
-- `Q1-Invalid-Login`
-- `Q2-Register-Add-To-Cart`
-- `Q3-Product-Search-Checkout`
-- `Part-B-API-Automation`
-- `main`
 
 Each task was developed in its respective branch and merged into the main branch.
 
